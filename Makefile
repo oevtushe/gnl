@@ -1,7 +1,7 @@
 NAME=gnl
 DEPS=get_next_line.h
 SRCS=get_next_line.c main.c
-OBJS=$(SRCS:.c=.o)
+OBJS := $(SRCS:.c=.o)
 KEYS=-Wall -Werror -Wextra
 LIBS=libft.a
 LIB_DIR=libft/
