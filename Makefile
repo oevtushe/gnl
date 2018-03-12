@@ -1,31 +1,53 @@
-NAME=gnl
-DEPS=get_next_line.h
-SRCS=get_next_line.c main.c
-OBJS := $(SRCS:.c=.o)
-KEYS=-Wall -Werror -Wextra
-LIBS=libft.a
-LIB_DIR=libft/
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: oevtushe <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/03/11 15:31:59 by oevtushe          #+#    #+#              #
+#    Updated: 2018/03/12 10:41:24 by oevtushe         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-all: $(LIBS) $(NAME) 
+# Run make like this:
+# 	make <target> FT_DIR=<relative path to libft>
 
-$(NAME): $(OBJS)
-	gcc $(KEYS) -o $(NAME) $(OBJS) -L./$(LIB_DIR) -lft -I./libft -I./
+include Gnl.mk
+include $(FT_DIR)/Pretty.mk
+include $(FT_DIR)/Libft.mk
 
-$(LIBS):
-	@$(MAKE) -C $(LIB_DIR)
+RM		:= rm -rf
+CFLAGS	:= -Wall -Werror -Wextra
+MFLAGS	:= --no-print-directory -C
+CC		:= gcc
 
-%.o: %.c $(DEPS)
-	gcc $(KEYS) -c $(SRCS) -I./libft -I./
+all: $(FT_OBJS) $(GNL_OBJS) 
+
+obj: $(GNL_OBJS)
+
+$(GNL_OBJS_DIR)/%.o: $(GNL_DIR)/%.c $(GNL_DEPS) $(FT_DEPS)
+	@$(call COMPILE_P,$(@:%=$(RPTH)/%))
+	@$(CC) $(CFLAGS) -o $@ -c $< -I$(FT_DEPS_DIR)
+
+$(FT_OBJS_DIR)/%.o: $(FT_DIR)/%.c $(FT_DEPS)
+	@$(call SUBMAKE_P,$(FT_DIR))
+	@$(MAKE) obj RPTH=$(FT_DIR) $(MFLAGS) $(FT_DIR)
+
+$(GNL_OBJS): |$(GNL_OBJS_DIR)
+
+$(GNL_OBJS_DIR):
+	@$(call DIR_CREATE_P,$(GNL_OBJS_DIR:$(GNL_DIR)/%=$(FPTH)/%))
+	@mkdir $@
 
 clean:
-	/bin/rm -f $(OBJS)
-	@$(MAKE) -C $(LIB_DIR) clean
+	@$(RM) $(GNL_OBJS_DIR)
+	@$(MAKE) clean $(MFLAGS) $(FT_DIR)
 
 fclean: clean
-	/bin/rm -f $(NAME)
-	@$(MAKE) -C $(LIB_DIR) fclean
+	@$(MAKE) fclean $(MFLAGS) $(FT_DIR)
 
 re: fclean
-	make
-	@$(MAKE) -C $(LIB_DIR) re
+	@$(MAKE)
 
+.PHONY: all clean fclean re
