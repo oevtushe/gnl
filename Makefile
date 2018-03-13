@@ -6,7 +6,7 @@
 #    By: oevtushe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/11 15:31:59 by oevtushe          #+#    #+#              #
-#    Updated: 2018/03/12 10:41:24 by oevtushe         ###   ########.fr        #
+#    Updated: 2018/03/13 14:44:48 by oevtushe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,6 @@
 
 include Gnl.mk
 include $(FT_DIR)/Pretty.mk
-include $(FT_DIR)/Libft.mk
 
 RM		:= rm -rf
 CFLAGS	:= -Wall -Werror -Wextra
@@ -37,7 +36,7 @@ $(FT_OBJS_DIR)/%.o: $(FT_DIR)/%.c $(FT_DEPS)
 $(GNL_OBJS): |$(GNL_OBJS_DIR)
 
 $(GNL_OBJS_DIR):
-	@$(call DIR_CREATE_P,$(GNL_OBJS_DIR:$(GNL_DIR)/%=$(FPTH)/%))
+	@$(call DIR_CREATE_P,$(@:%=$(RPTH)/%))
 	@mkdir $@
 
 clean:
