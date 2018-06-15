@@ -13,13 +13,15 @@
 # Run make like this:
 # 	make <target> FT_DIR=<relative path to libft>
 
-include Gnl.mk
-include $(FT_DIR)/Pretty.mk
+override GNL_DIR	:= .
 
-RM		:= rm -rf
-CFLAGS	:= -Wall -Werror -Wextra
-MFLAGS	:= --no-print-directory -C
-CC		:= gcc
+include 			Gnl.mk
+include 			$(FT_DIR)/Pretty.mk
+
+RM					:= rm -rf
+CFLAGS				:= -Wall -Werror -Wextra
+MFLAGS				:= --no-print-directory -C
+CC					:= gcc
 
 all: $(FT_OBJS) $(GNL_OBJS) 
 
